@@ -27,7 +27,7 @@ class CreateUsersTable extends Migration
             $table->string('state');
             $table->string('country');
             $table->string('zip_code');
-            $table->string('about');
+            $table->longText('about');
             $table->string('profile_photo');
             $table->string('landline')->nullable();
             $table->string('facebook')->nullable();
