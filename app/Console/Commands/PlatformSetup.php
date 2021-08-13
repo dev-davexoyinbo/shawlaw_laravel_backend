@@ -39,6 +39,8 @@ class PlatformSetup extends Command
     {
         $this->call("key:generate");
         $this->call("migrate");
+        $this->call("roles-permission:populate");
+
         return 0;
     }
 }

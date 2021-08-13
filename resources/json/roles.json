@@ -7,7 +7,7 @@
         ]
     },
     {
-        "id": 1,
+        "id": 2,
         "name": "AGENT",
         "permissions": [
             1,
@@ -16,7 +16,7 @@
         ]
     },
     {
-        "id": 1,
+        "id": 3,
         "name": "ADMIN",
         "permissions": [
             1,

@@ -55,6 +55,7 @@ class PopulateRolesAndPermissionsCommand extends Command
             Permission::updateOrCreate([
                 "id" => $permission["id"]
             ], [
+                "id" => $permission["id"],
                 "name" => $permission["name"]
             ]);
         } //end 
@@ -63,6 +64,7 @@ class PopulateRolesAndPermissionsCommand extends Command
             $role = Role::updateOrCreate([
                 "id" => $r["id"]
             ], [
+                "id" => $r["id"],
                 "name" => $r["name"]
             ]);
 
