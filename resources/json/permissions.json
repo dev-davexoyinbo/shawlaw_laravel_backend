@@ -1,0 +1,22 @@
+[
+    {
+        "id": 1,
+        "name": "property:view"
+    },
+    {
+        "id": 2,
+        "name": "property:create"
+    },
+    {
+        "id": 3,
+        "name": "property:delete"
+    },
+    {
+        "id": 4,
+        "name": "agents:view"
+    },
+    {
+        "id": 5,
+        "name": "agents:delete"
+    }
+]

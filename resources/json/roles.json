@@ -1,0 +1,29 @@
+[
+    {
+        "id": 1,
+        "name": "USER",
+        "permissions": [
+            1
+        ]
+    },
+    {
+        "id": 1,
+        "name": "AGENT",
+        "permissions": [
+            1,
+            2,
+            3
+        ]
+    },
+    {
+        "id": 1,
+        "name": "ADMIN",
+        "permissions": [
+            1,
+            2,
+            3,
+            4,
+            5
+        ]
+    }
+]

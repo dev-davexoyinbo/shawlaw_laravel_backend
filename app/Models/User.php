@@ -43,6 +43,15 @@ class User extends Authenticatable
 
     public function roles()
     {
-        return $this->belongsToMany(Role::class, "user_role", "role_id", "user_id");
+        return $this
+            ->belongsToMany(Role::class, "user_role", "user_id", "role_id")
+            ->using(UserRole::class);
+    } //end method roles
+
+    public function directPermissions()
+    {
+        return $this
+            ->belongsToMany(Permission::class, "user_permission", "user_id", "permission_id")
+            ->using(UserPermission::class);
     } //end method roles
 }//end class User
