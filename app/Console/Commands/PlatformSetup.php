@@ -38,9 +38,9 @@ class PlatformSetup extends Command
     public function handle()
     {
         $this->call("key:generate");
-        $this->call("migrate");
+        $this->call("migrate:refresh");
         $this->call("roles-permission:populate");
-
+        $this->call("admin-user:setup");
         return 0;
     }
 }
