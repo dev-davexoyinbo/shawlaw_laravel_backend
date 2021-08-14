@@ -53,7 +53,7 @@ class AdminProfileCommand extends Command
         $user->country = "Pacific Country";
         $user->zip_code = "234444";
         $user->about = "Lorem ipsum dolor sit amet consectetur adipisicing elit. Modi quasi tenetur, officiis, accusantium numquam consequuntur fuga laudantium eius veritatis dolorum suscipit aspernatur! Ea, praesentium possimus sit ratione quidem accusantium beatae.";
-        $user->profile_photo = "public/default-profile.jpg";
+        $user->profile_photo = "/default-profile.jpg";
         $user->password = Hash::make("password");
 
         $user->save();

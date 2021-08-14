@@ -62,12 +62,12 @@ class AuthenticationController extends Controller
         ]);
 
         try {
-            $authenticationService->registerUser($request->all());
+            $user = $authenticationService->registerUser($request->all())->getUser();
         } catch (AuthenticationServiceException $e) {
             return $this->errorResponse($e);
         }
 
-        return response()->json(["message" => "Registration sucessful!"], 201);
+        return response()->json(["message" => "Registration sucessful!", "id" => $user->id], 201);
     } //end method this is the register method
 
     public function logout(AuthenticationService $authenticationService)

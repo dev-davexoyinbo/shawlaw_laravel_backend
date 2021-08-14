@@ -88,8 +88,10 @@ class AuthenticationService
 
         $user = auth()->user();
 
-        [$user->permissions, $user->roles] = $rolePriviledgeService->user($user)->getPermissionAndRoleList();
-
+        $returnVal = $rolePriviledgeService->user($user)->getPermissionAndRoleList();
+        unset($user->permisisons);
+        unset($user->roles);
+        [$user->permissions, $user->roles]  = $returnVal;
         return $user;
     } //end method me
 }//end class AuthenticationService

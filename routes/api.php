@@ -24,6 +24,9 @@ Route::post("/auth/register", [AuthenticationController::class, "register"])->na
 Route::post("/auth/login", [AuthenticationController::class, "login"])->name("auth.login");
 Route::get("/auth/me", [AuthenticationController::class, "me"])->name("auth.me");
 
-Route::prefix("users")->group(function () {
+Route::prefix("users")->middleware("auth:api")->group(function () {
     Route::post("/", [AuthenticationController::class, "register"]);
+    Route::post("/update-user", [UserController::class, "update"]);
+    Route::get("/{user}", [UserController::class, "show"])->withoutMiddleware("auth:api");
+    Route::delete("/{user}", [UserController::class, "destroy"])->middleware(["permission:user_delete"]);
 });

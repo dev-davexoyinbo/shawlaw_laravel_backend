@@ -26,9 +26,13 @@ class RoleAndPriviledgeService
         if (!$user) {
             throw new RoleAndPriviledgeServiceException("The user is not defined");
         }
-        $permissions = $user->directPermissions()->get();
+        $permissions = $user->directPermissions;
 
-        $roles = $user->roles()->with("permissions")->get();
+        $user->loadMissing("roles", "roles.permissions");
+
+        $roles = $user->roles;
+
+        // $roles = $user->roles()->with("permissions")->get();
 
         $roles->each(function ($role) use (&$permissions) {
             $permissions = $permissions->merge($role->permissions);
@@ -41,4 +45,14 @@ class RoleAndPriviledgeService
 
         return $rv;
     } //end method getPermissions
+
+    public function hasPermission($permission): bool
+    {
+        return in_array($permission, $this->getPermissionAndRoleList()[0]);
+    } //end method hasPermission
+
+    public function hasRole($role): bool
+    {
+        return $this->user->roles()->where("roles.name", $role)->exists();
+    } //end method 
 }//end class RoleAndPriviledgeService

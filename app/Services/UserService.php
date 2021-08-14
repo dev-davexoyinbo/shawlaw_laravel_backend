@@ -44,11 +44,13 @@ class UserService
      *          ->save()
      *          ->getUser();
      */
-    public function updateOrCreateUser($data): UserService
+    public function updateOrCreateUser($data, $excludeColums = []): UserService
     {
-        // exclude some columns because they are not necessarily strings
+        // exclude some columns because they are not nmecessarily strings
         // or the data might be handled differently
         $excludeDataColumns = ["password", "profile_photo"];
+
+        $excludeDataColumns = array_merge($excludeDataColumns, $excludeColums);
 
         // if user is not defined create a new one
         $user = $this->user ?? new User();

@@ -6,6 +6,7 @@ use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+use Illuminate\Support\Facades\Storage;
 use Tymon\JWTAuth\Contracts\JWTSubject;
 
 class User extends Authenticatable implements JWTSubject
@@ -41,6 +42,22 @@ class User extends Authenticatable implements JWTSubject
     protected $casts = [
         'email_verified_at' => 'datetime',
     ];
+
+    /**
+     * The "booted" method of the model.
+     *
+     * @return void
+     */
+    protected static function booted()
+    {
+        static::deleted(function ($user) {
+            // if user has profile photo, delete
+            if ($user->profile_photo) {
+                $deletePath = public_path(preg_replace("/^\//", "", $user->profile_photo));
+                Storage::delete($deletePath);
+            }
+        });
+    }
 
     /**
      * Get the identifier that will be stored in the subject claim of the JWT.
