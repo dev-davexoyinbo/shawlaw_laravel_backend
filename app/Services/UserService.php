@@ -104,7 +104,7 @@ class UserService
 
         // if user has profile photo, save the path
         if ($previousUrl) {
-            $deletePath = public_path(preg_replace("/^\//", "", $previousUrl));
+            $deletePath = preg_replace("/^\/storage/", "", $previousUrl);
         }
 
 
@@ -118,7 +118,7 @@ class UserService
 
         // File storage successful: delete previous profile photo
         if ($deletePath || $deletePath != "") {
-            Storage::delete($deletePath);
+            Storage::disk("public")->delete($deletePath);
         }
 
         return $filePath;

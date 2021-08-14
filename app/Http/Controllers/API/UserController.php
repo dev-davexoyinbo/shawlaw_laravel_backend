@@ -92,7 +92,8 @@ class UserController extends Controller
             //createOrUpdate the user
             $user = $userService
                 ->clearUser()
-                ->updateOrCreateUser($request->all())
+                ->user(auth()->user())
+                ->updateOrCreateUser($request->all(), ["email"])
                 ->save()
                 ->getUser();
         } catch (UserServiceException $e) {

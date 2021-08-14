@@ -53,8 +53,8 @@ class User extends Authenticatable implements JWTSubject
         static::deleted(function ($user) {
             // if user has profile photo, delete
             if ($user->profile_photo) {
-                $deletePath = public_path(preg_replace("/^\//", "", $user->profile_photo));
-                Storage::delete($deletePath);
+                $deletePath = preg_replace("/^\/storage/", "", $user->profile_photo);
+                Storage::disk("public")->delete($deletePath);
             }
         });
     }
