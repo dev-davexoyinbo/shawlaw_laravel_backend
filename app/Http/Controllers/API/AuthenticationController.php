@@ -35,9 +35,30 @@ class AuthenticationController extends Controller
 
     public function register(Request $request, AuthenticationService $authenticationService)
     {
+        // To add a role to a user add the field
+        // "_role" to the request
         $request->validate([
+            "_role" => "string", // to attach user to a role
             "email" => "required|email",
-            "password" => "required"
+            "password" => "required|string",
+            "name" => "required|string",
+            "title" => "required|string",
+            "phone_number" => "required|string",
+            "address" => "required|string",
+            "address_2" => "string",
+            "city" => "required|string",
+            "state" => "required|string",
+            "country" => "required|string",
+            "zip_code" => "required|string",
+            "about" => "required|string",
+            "profile_photo" => "required|image",
+            "landline" => "string",
+            "facebook" => "string",
+            "twitter" => "string",
+            "linkedin" => "string",
+            "google_plus" => "string",
+            "instagram" => "string",
+            "tumbler" => "string",
         ]);
 
         try {

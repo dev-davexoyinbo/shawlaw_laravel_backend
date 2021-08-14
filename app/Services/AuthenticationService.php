@@ -5,6 +5,7 @@ namespace App\Services;
 use App\Models\User;
 use Illuminate\Support\Facades\Hash;
 use App\Exceptions\AuthenticationServiceException;
+use App\Exceptions\UserServiceException;
 use App\Models\Role;
 use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\DB;
@@ -13,6 +14,12 @@ use Throwable;
 class AuthenticationService
 {
     private User $user;
+    private UserService $userService;
+
+    public function __construct()
+    {
+        $this->userService = App::make(UserService::class);
+    } //end constructor
 
     public function getUser(): User
     {
@@ -21,22 +28,32 @@ class AuthenticationService
 
     public function registerUser($data): AuthenticationService
     {
-        $user = new User();
-        $user->first_name = $data["first_name"] ?? "";
-        $user->last_name = $data["last_name"] ?? "";
-        $user->email = $data["email"];
-        $user->password = Hash::make($data["password"]);
-
-        if (User::whereRaw(DB::raw("LOWER(email) = ?"), [strtolower($user->email)])->exists()) {
+        // check if email exists in the database
+        if (User::whereRaw(DB::raw("LOWER(email) = ?"), [strtolower($data["email"])])->exists()) {
             throw new AuthenticationServiceException("Email already in use", 400);
         }
 
-        $role = Role::where("name", "USER")->first();
+        try {
+            //createOrUpdate the user
+            $user = $this->userService
+                ->clearUser()
+                ->updateOrCreateUser($data)
+                ->save()
+                ->getUser();
+        } catch (UserServiceException $e) {
+            throw new AuthenticationServiceException(UserServiceException::class . ": {$e->getMessage()}", $e->getCode());
+        }
 
-        $user->save();
+        $roleQuery = Role::where("name", "USER");
+
+        if (isset($data["_role"]) && $data["_role"]) {
+            $roleQuery->orWhere("name", $data["_role"]);
+        }
+
+        $roleIds = $roleQuery->pluck("id")->toArray();
 
         // give every registered user a role of USER
-        $user->roles()->attach($role->id);
+        $user->roles()->sync($roleIds ?? []);
 
         $this->user = $user;
         return $this;
