@@ -40,4 +40,6 @@ Route::prefix("properties")->middleware("auth:api")->group(function () {
     Route::get("/{property}", [PropertyController::class, "show"])->withoutMiddleware("auth:api");
     Route::post("/{property}", [PropertyController::class, "update"])
         ->middleware("permission:property_update"); // authenticated user must have the property_create permission
+    Route::delete("/{property}", [PropertyController::class, "destroy"])
+        ->middleware("permission:property_delete"); // authenticated user must have the property_delete permission
 });

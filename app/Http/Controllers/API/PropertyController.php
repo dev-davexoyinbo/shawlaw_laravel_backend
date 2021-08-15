@@ -139,6 +139,8 @@ class PropertyController extends Controller
      */
     public function destroy(Property $property)
     {
-        //
-    }
-}
+        $property->delete();
+
+        return response()->json(["message" => "Property deleted successfully"], 202);
+    } //end method destroy
+}//end class PropertyController
