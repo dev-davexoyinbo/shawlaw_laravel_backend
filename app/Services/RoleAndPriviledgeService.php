@@ -16,7 +16,14 @@ class RoleAndPriviledgeService
         $this->user = $user;
 
         return $this;
-    } //end method user
+    } //end method usere
+
+    public function clearUser(): RoleAndPriviledgeService
+    {
+        unset($this->user);
+
+        return $this;
+    } //end method clearUser
 
     //Returns [permissions, roles]
     public function getPermissionAndRoleList()

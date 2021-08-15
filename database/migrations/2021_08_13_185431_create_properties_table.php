@@ -37,7 +37,7 @@ class CreatePropertiesTable extends Migration
             $table->string("contact_name");
             $table->string("contact_email");
             $table->string("contact_phone");
-            $table->boolean("is_featured");
+            $table->boolean("is_featured")->default(true);
             $table->timestamps();
             $table->softDeletes();
         });

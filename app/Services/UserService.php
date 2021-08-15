@@ -32,6 +32,7 @@ class UserService
 
     /**
      * @param array|object $data
+     * @param array|object $excludeColumns
      * @param Illuminate\Http\Request $request
      * For an update, the user must be passed into the user() 
      * 
@@ -44,13 +45,13 @@ class UserService
      *          ->save()
      *          ->getUser();
      */
-    public function updateOrCreateUser($data, $excludeColums = []): UserService
+    public function updateOrCreateUser($data, $excludeColumns = []): UserService
     {
         // exclude some columns because they are not nmecessarily strings
         // or the data might be handled differently
         $excludeDataColumns = ["password", "profile_photo"];
 
-        $excludeDataColumns = array_merge($excludeDataColumns, $excludeColums);
+        $excludeDataColumns = array_merge($excludeDataColumns, $excludeColumns);
 
         // if user is not defined create a new one
         $user = $this->user ?? new User();
@@ -84,7 +85,7 @@ class UserService
             $user->profile_photo = $this->handleProfilePhoto($user->profile_photo);
         }
 
-        $this->user = $user;
+        $this->user($user);
         return $this;
     } //end method updateOrCreateUser
 
