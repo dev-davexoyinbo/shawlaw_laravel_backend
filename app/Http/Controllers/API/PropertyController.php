@@ -80,19 +80,8 @@ class PropertyController extends Controller
      */
     public function show(Property $property)
     {
-        //
-    }//end method show
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  \App\Models\Property  $property
-     * @return \Illuminate\Http\Response
-     */
-    public function edit(Property $property)
-    {
-        //
-    }
+        return response()->json(["property" => $property]);
+    } //end method show
 
     /**
      * Update the specified resource in storage.

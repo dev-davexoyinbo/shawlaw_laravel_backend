@@ -36,4 +36,5 @@ Route::prefix("users")->middleware("auth:api")->group(function () {
 
 Route::prefix("properties")->middleware("auth:api")->group(function () {
     Route::post("/", [PropertyController::class, "store"])->middleware("permission:property_create");
+    Route::get("/{property}", [PropertyController::class, "show"])->withoutMiddleware("auth:api");
 });
