@@ -90,10 +90,46 @@ class PropertyController extends Controller
      * @param  \App\Models\Property  $property
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Property $property)
+    public function update(Request $request, Property $property, PropertyService $propertyService)
     {
-        //
-    }
+        $request->validate([
+            "title" => "string",
+            "status" => "string",
+            "type" => "string",
+            "price" => "numeric",
+            "area" => "string",
+            "bedroom_count" => "integer",
+            "bathroom_count" => "integer",
+            // "gallery" => "required", // the gallery is not required since it would be set when it is being created
+            "address" => "string",
+            "city" => "string",
+            "state" => "string",
+            "country" => "string",
+            "zip_code" => "string",
+            "description" => "string",
+            "building_age" => "string",
+            "garage_count" => "integer",
+            "room_count" => "integer",
+            "other_features" => "json",
+            "contact_name" => "string",
+            "contact_email" => "email",
+            "contact_phone" => "string",
+            "is_featured" => "boolean"
+        ]);
+
+        try {
+            $property = $propertyService
+                ->user(auth()->user())
+                ->property($property)
+                ->updateOrCreateProperty($request->all())
+                ->save()
+                ->getProperty();
+        } catch (PropertyServiceException $e) {
+            return $this->errorResponse($e);
+        }
+
+        return response()->json(["message" => "Property updated successfully", "id" => $property->id]);
+    } //end method update
 
     /**
      * Remove the specified resource from storage.

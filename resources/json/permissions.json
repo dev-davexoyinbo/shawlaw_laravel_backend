@@ -9,18 +9,22 @@
     },
     {
         "id": 3,
-        "name": "property_delete"
+        "name": "property_update"
     },
     {
         "id": 4,
-        "name": "agents_view"
+        "name": "property_delete"
     },
     {
         "id": 5,
-        "name": "agents_create"
+        "name": "agents_view"
     },
     {
         "id": 6,
+        "name": "agents_create"
+    },
+    {
+        "id": 7,
         "name": "user_delete"
     }
 ]

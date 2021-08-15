@@ -35,6 +35,9 @@ Route::prefix("users")->middleware("auth:api")->group(function () {
 });
 
 Route::prefix("properties")->middleware("auth:api")->group(function () {
-    Route::post("/", [PropertyController::class, "store"])->middleware("permission:property_create");
+    Route::post("/", [PropertyController::class, "store"])
+        ->middleware("permission:property_create"); // authenticated user must have the property_create permission
     Route::get("/{property}", [PropertyController::class, "show"])->withoutMiddleware("auth:api");
+    Route::post("/{property}", [PropertyController::class, "update"])
+        ->middleware("permission:property_update"); // authenticated user must have the property_create permission
 });

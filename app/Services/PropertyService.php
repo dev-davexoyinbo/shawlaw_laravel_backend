@@ -144,12 +144,24 @@ class PropertyService
         $user = $this->user;
 
         //update
-        if ($property->id)
+        if ($property->id) {
+            //ensure user has the permission to update
+            $canUpdate = $this->roleAndPriviledgeService
+                ->clearUser()
+                ->user($user)
+                ->hasPermission("property_update");
+            if (!$canUpdate) {
+                throw new PropertyServiceException("This user can't update a property");
+            }
             $property->save();
+        }
+        //new
         else {
-            //new
-
-            $canCreate = $this->roleAndPriviledgeService->clearUser()->user($user)->hasPermission("property_create");
+            //ensure the user has the permission to create property
+            $canCreate = $this->roleAndPriviledgeService
+                ->clearUser()
+                ->user($user)
+                ->hasPermission("property_create");
             if (!$canCreate) {
                 throw new PropertyServiceException("This user can't create a property");
             }
