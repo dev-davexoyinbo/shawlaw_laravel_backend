@@ -11,6 +11,7 @@ use App\Models\User;
 use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\Schema;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Str;
 
 class PropertyService
 {
@@ -22,6 +23,25 @@ class PropertyService
     {
         $this->roleAndPriviledgeService = App::make(RoleAndPriviledgeService::class);
     } //end constructor
+
+    // ==============================================
+    // STATIC FUNCTIONS
+    // ==============================================
+
+    public static function getPropertyWithSlug(string $slug): Property
+    {
+        $property = Property::where("slug", $slug)->first();
+
+        if ($property == null) {
+            throw new PropertyServiceException("Property not found", 404);
+        }
+
+        return $property;
+    } //end method getPropertyWithSlug
+
+    // ==============================================
+    // MEMBER FUNCTIONS
+    // ==============================================
 
     public function user(User $user): PropertyService
     {
@@ -75,6 +95,9 @@ class PropertyService
      */
     public function updateOrCreateProperty($data, $excludeColumns = []): PropertyService
     {
+        // NOTE: check the save() method for the updating of the slug
+
+
         // exclude some columns because they are not nmecessarily strings
         // or the data might be handled differently
         $excludeDataColumns = ["gallery", "type", "status", "other_features"];
@@ -157,6 +180,9 @@ class PropertyService
         }
         //new
         else {
+            //create a slug for new properties
+            $property->slug = substr(Str::slug($property->title), 0, 15) . now()->timestamp;
+
             //ensure the user has the permission to create property
             $canCreate = $this->roleAndPriviledgeService
                 ->clearUser()

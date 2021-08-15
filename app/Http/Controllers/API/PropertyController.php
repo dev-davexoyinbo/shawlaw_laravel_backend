@@ -69,7 +69,11 @@ class PropertyController extends Controller
             return $this->errorResponse($e);
         }
 
-        return response()->json(["message" => "Property created successfully", "id" => $property->id], 201);
+        return response()->json([
+            "message" => "Property created successfully",
+            "id" => $property->id,
+            "slug" => $property->slug
+        ], 201);
     } //end method store
 
     /**
@@ -78,8 +82,14 @@ class PropertyController extends Controller
      * @param  \App\Models\Property  $property
      * @return \Illuminate\Http\Response
      */
-    public function show(Property $property)
+    public function show(string $slug)
     {
+        try {
+            $property = PropertyService::getPropertyWithSlug($slug);
+        } catch (PropertyServiceException $e) {
+            return $this->errorResponse($e);
+        }
+
         return response()->json(["property" => $property]);
     } //end method show
 
@@ -90,7 +100,7 @@ class PropertyController extends Controller
      * @param  \App\Models\Property  $property
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Property $property, PropertyService $propertyService)
+    public function update(Request $request, string $slug, PropertyService $propertyService)
     {
         $request->validate([
             "title" => "string",
@@ -118,6 +128,8 @@ class PropertyController extends Controller
         ]);
 
         try {
+            $property = PropertyService::getPropertyWithSlug($slug);
+
             $property = $propertyService
                 ->user(auth()->user())
                 ->property($property)
@@ -128,7 +140,11 @@ class PropertyController extends Controller
             return $this->errorResponse($e);
         }
 
-        return response()->json(["message" => "Property updated successfully", "id" => $property->id]);
+        return response()->json([
+            "message" => "Property updated successfully",
+            "id" => $property->id,
+            "slug" => $property->slug
+        ]);
     } //end method update
 
     /**
@@ -137,9 +153,13 @@ class PropertyController extends Controller
      * @param  \App\Models\Property  $property
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Property $property)
+    public function destroy(string $slug)
     {
-        $property->delete();
+        try {
+            PropertyService::getPropertyWithSlug($slug)->delete();
+        } catch (PropertyServiceException $e) {
+            return $this->errorResponse($e);
+        }
 
         return response()->json(["message" => "Property deleted successfully"], 202);
     } //end method destroy

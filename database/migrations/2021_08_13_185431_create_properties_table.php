@@ -19,6 +19,7 @@ class CreatePropertiesTable extends Migration
             $table->string("title");
             $table->string("status");
             $table->string("type");
+            $table->string("slug")->unique();
             $table->string("price");
             $table->string("area");
             $table->string("bedroom_count");
