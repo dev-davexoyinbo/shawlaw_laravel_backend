@@ -21,8 +21,10 @@ class PropertyController extends Controller
      */
     public function index()
     {
-        //
-    }
+        $paginationData = Property::simplePaginate();
+
+        return response()->json(["properties" => $paginationData]);
+    } //end method index
 
     /**
      * Store a newly created resource in storage.
