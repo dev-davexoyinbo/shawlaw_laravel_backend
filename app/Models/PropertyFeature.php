@@ -9,8 +9,8 @@ abstract class PropertyFeature
     use HasConstants;
     const AIR_CONDITION = "Air Condition";
     const BEDDING = "Bedding";
-    const HEATING = "heating";
-    const INTERNET = "internet";
+    const HEATING = "Heating";
+    const INTERNET = "Internet";
     const MICROWAVE = "Microwave";
     const SMOKING_ALLOWED = "Smoking Allowed";
     const TERRACE = "Terrace";

@@ -6,6 +6,7 @@ use App\Exceptions\PropertyServiceException;
 use App\Http\Controllers\Controller;
 use App\Models\Property;
 use App\Models\PropertyFeature;
+use App\Models\PropertyType;
 use App\Services\PropertyService;
 use App\Traits\ErrorResponseTrait;
 use Illuminate\Http\Request;
@@ -21,7 +22,7 @@ class PropertyController extends Controller
      */
     public function index()
     {
-        $paginationData = Property::simplePaginate();
+        $paginationData = Property::latest()->simplePaginate();
 
         return response()->json(["properties" => $paginationData]);
     } //end method index
@@ -165,4 +166,20 @@ class PropertyController extends Controller
 
         return response()->json(["message" => "Property deleted successfully"], 202);
     } //end method destroy
+
+    public function propertyTypes()
+    {
+        $types = PropertyType::getConstants();
+
+        return response()->json(["types" => $types]);
+    } //end method propertyTypes
+
+
+
+    public function propertyFeatures()
+    {
+        $features = PropertyFeature::getConstants();
+
+        return response()->json(["features" => $features]);
+    } //end method propertyFeatures
 }//end class PropertyController
