@@ -44,6 +44,7 @@ class PropertyController extends Controller
             "bedroom_count" => "integer",
             "bathroom_count" => "integer",
             "gallery" => "required",
+            'gallery.*' => 'image|max:2048',
             "address" => "required",
             "city" => "required",
             "state" => "required",

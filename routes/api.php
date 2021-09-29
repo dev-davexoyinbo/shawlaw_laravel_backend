@@ -31,7 +31,9 @@ Route::post("/auth/login", [AuthenticationController::class, "login"])->name("au
 Route::get("/auth/me", [AuthenticationController::class, "me"])->name("auth.me");
 
 Route::prefix("users")->middleware("auth:api")->group(function () {
-    Route::post("/", [AuthenticationController::class, "register"]);
+    Route::post("/", [AuthenticationController::class, "register"])->middleware("role:ADMIN");
+    Route::get("/agents", [UserController::class, "agents"])->middleware("permission:agents_view");
+    Route::post("/agents/{id}/toggle-active", [UserController::class, "toggleActive"])->middleware("role:ADMIN");
     Route::post("/update-user", [UserController::class, "update"]);
     Route::get("/{user}", [UserController::class, "show"])->withoutMiddleware("auth:api");
     Route::delete("/{user}", [UserController::class, "destroy"])->middleware(["permission:user_delete"]);

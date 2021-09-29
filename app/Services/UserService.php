@@ -63,11 +63,12 @@ class UserService
             //if column is to be excluded
             if (in_array($column, $excludeDataColumns)) continue;
 
+            
             $user[$column] = $data[$column] ?? $user[$column];
-
+            
             //unset null $user properties to allow the database assign a default
             //value for default column values
-            if ($user[$column] == null)
+            if ($user[$column] === null)
                 unset($user[$column]);
         } //end columns loop
 
@@ -76,12 +77,12 @@ class UserService
         //================================
 
         //Password
-        if ($data["password"]) {
+        if (isset($data["password"]) && $data["password"]) {
             $user->password = Hash::make($data["password"]);
         }
 
         // TODO: complete the logic for the profile photo
-        if ($data["profile_photo"] && request()->file("profile_photo")) {
+        if (isset($data["profile_photo"]) && $data["profile_photo"] && request()->file("profile_photo")) {
             $user->profile_photo = $this->handleProfilePhoto($user->profile_photo);
         }
 

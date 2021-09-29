@@ -14,37 +14,16 @@ class UserController extends Controller
 {
     use ErrorResponseTrait;
 
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function index()
-    {
-        //
-    }
+    public function agents(){
+        $agents = User::whereHas("roles", function($query) {
+            $query->where("roles.name", "AGENT");
+        })
+        ->with("roles:name,id")
+        ->withCount("properties")
+        ->simplePaginate();
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //
-    }
-
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
-    // Check the registerUser function of the App\Services\AuthenticationService class
-    public function store(Request $request)
-    {
-    }
-
+        return response()->json(["message" => "Agents fetched", "agents" => $agents]);
+    }//end method agents
     /**
      * Display the specified resource.
      *
@@ -65,26 +44,27 @@ class UserController extends Controller
     public function update(Request $request, UserService $userService)
     {
         $request->validate([
-            "_role" => "string", // to attach user to a role
-            "password" => "string",
-            "name" => "string",
-            "title" => "string",
-            "phone_number" => "string",
-            "address" => "string",
-            "address_2" => "string",
-            "city" => "string",
-            "state" => "string",
-            "country" => "string",
-            "zip_code" => "string",
-            "about" => "string",
-            "profile_photo" => "image",
-            "landline" => "string",
-            "facebook" => "string",
-            "twitter" => "string",
-            "linkedin" => "string",
-            "google_plus" => "string",
-            "instagram" => "string",
-            "tumbler" => "string",
+            "_role" => "nullable", // to attach user to a role
+            "password" => "nullable",
+            "name" => "nullable",
+            "title" => "nullable",
+            "phone_number" => "nullable",
+            "address" => "nullable",
+            "address_2" => "nullable",
+            "city" => "nullable",
+            "state" => "nullable",
+            "country" => "nullable",
+            "zip_code" => "nullable",
+            "about" => "nullable",
+            "profile_photo" => "image|nullable",
+            "landline" => "nullable",
+            "facebook" => "nullable",
+            "twitter" => "nullable",
+            "linkedin" => "nullable",
+            "google_plus" => "nullable",
+            "instagram" => "nullable",
+            "tumbler" => "nullable",
+            "is_active" => "nullable",
         ]);
 
 
@@ -100,8 +80,27 @@ class UserController extends Controller
             return $this->errorResponse($e);
         }
 
-        return response()->json(["message" => "Registration sucessful!", "id" => $user->id]);
+        return response()->json(["message" => "Update sucessful!", "id" => $user->id]);
     } //end method update
+
+    public function toggleActive($id, UserService $userService) {
+
+        try {
+            $user = User::find($id);
+            //createOrUpdate the user
+            $user = $userService
+                ->clearUser()
+                ->user($user)
+                ->updateOrCreateUser(["is_active" => !!!$user->is_active])
+                ->save()
+                ->getUser();
+        } catch (UserServiceException $e) {
+            return $this->errorResponse($e);
+        }
+
+
+        return response()->json(["message" => "Update sucessful!", "user" => $user]);
+    }//end method toggleActive
 
     /**
      * Remove the specified resource from storage.

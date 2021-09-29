@@ -51,14 +51,14 @@ class AuthenticationController extends Controller
             "country" => "required|string",
             "zip_code" => "required|string",
             "about" => "required|string",
-            "profile_photo" => "required|image",
-            "landline" => "string",
-            "facebook" => "string",
-            "twitter" => "string",
-            "linkedin" => "string",
-            "google_plus" => "string",
-            "instagram" => "string",
-            "tumbler" => "string",
+            "profile_photo" => "required|image|max:1024",
+            "landline" => "string|nullable",
+            "facebook" => "string|nullable",
+            "twitter" => "string|nullable",
+            "linkedin" => "string|nullable",
+            "google_plus" => "string|nullable",
+            "instagram" => "string|nullable",
+            "tumbler" => "string|nullable",
         ]);
 
         try {
