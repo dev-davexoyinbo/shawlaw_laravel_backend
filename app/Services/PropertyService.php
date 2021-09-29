@@ -125,13 +125,13 @@ class PropertyService
 
         //=============================
         // handle gallery file upload
-        if ($data["gallery"]) {
+        if (isset($data["gallery"]) && $data["gallery"]) {
             $property->gallery = $this->handleGalleryUpload($property->gallery ?? []);
         }
 
         //=============================
         // handle other_features
-        if ($data["other_features"]) {
+        if (isset($data["other_features"]) && $data["other_features"]) {
             $property->other_features = $this
                 ->handleOtherFeatures(
                     json_decode($data["other_features"], true)
@@ -140,7 +140,7 @@ class PropertyService
 
         //=============================
         // handle type
-        if ($data["type"]) {
+        if (isset($data["type"]) && $data["type"]) {
             $property->type = $this
                 ->handleType(
                     $data["type"]
@@ -149,7 +149,7 @@ class PropertyService
 
         //=============================
         // handle status
-        if ($data["status"]) {
+        if (isset($data["status"]) && $data["status"]) {
             $property->status = $this
                 ->handleStatus(
                     $data["status"]

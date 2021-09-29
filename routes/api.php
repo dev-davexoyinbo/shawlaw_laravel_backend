@@ -28,6 +28,7 @@ Route::post("/auth/register", [AuthenticationController::class, "register"])
     ->middleware(["auth:api", "role:ADMIN"]) // only admins can register a user
     ->name("auth.register.user");
 Route::post("/auth/login", [AuthenticationController::class, "login"])->name("auth.login");
+Route::post("/auth/logout", [AuthenticationController::class, "logout"])->name("auth.logout");
 Route::get("/auth/me", [AuthenticationController::class, "me"])->name("auth.me");
 
 Route::prefix("users")->middleware("auth:api")->group(function () {

@@ -79,7 +79,7 @@ class AuthenticationController extends Controller
             return $this->errorResponse($e);
         }
 
-        return response()->json(["message" => "Registration sucessful!"], 201);
+        return response()->json(["message" => "Logout sucessful!"]);
     } //end method logout
 
 
