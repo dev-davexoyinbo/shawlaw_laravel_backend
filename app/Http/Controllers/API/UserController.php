@@ -20,6 +20,7 @@ class UserController extends Controller
         })
         ->with("roles:name,id")
         ->withCount("properties")
+        ->orderBy("name")
         ->simplePaginate();
 
         return response()->json(["message" => "Agents fetched", "agents" => $agents]);

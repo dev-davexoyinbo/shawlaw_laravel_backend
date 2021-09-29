@@ -20,9 +20,14 @@ class PropertyController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
-        $paginationData = Property::latest()->simplePaginate();
+        $propertyQuery = Property::latest();
+
+        if ($request->by == "me")
+            $propertyQuery = auth()->user()->properties();
+
+        $paginationData = $propertyQuery->simplePaginate();
 
         return response()->json(["properties" => $paginationData]);
     } //end method index
