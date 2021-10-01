@@ -166,6 +166,8 @@ class PropertyService
         $title = $request->title ?? '';
         $minPrice = $request->min_price;
         $maxPrice = $request->max_price;
+        $bedroomCount = $request->bedroom_count;
+        $bathroomCount = $request->bedroom_count;
 
         try{
             $propertyQuery = $request->by == "me" ? auth()->user()->properties() : Property::query();
@@ -182,6 +184,14 @@ class PropertyService
 
         if ($maxPrice) {
             $propertyQuery->where("price", "<=", $maxPrice);
+        }
+
+        if ($bedroomCount) {
+            $propertyQuery->where("bedroom_count", $bedroomCount);
+        }
+
+        if ($bathroomCount) {
+            $propertyQuery->where("bathroom_count", $bathroomCount);
         }
 
         return $propertyQuery->simplePaginate();
