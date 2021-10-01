@@ -39,11 +39,11 @@ class ModelSearchCommand extends Command
     public function handle()
     {
         $propertyClass = Property::class;
-        // $this->call("scout:import", [
+        $this->call("scout:import", [
+            "model" => "$propertyClass"
+        ]);
+        // $this->call("tntsearch:import", [
         //     "model" => $propertyClass
         // ]);
-        $this->call("tntsearch:import", [
-            "model" => $propertyClass
-        ]);
     }
 }

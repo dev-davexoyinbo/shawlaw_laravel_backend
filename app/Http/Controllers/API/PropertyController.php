@@ -10,6 +10,7 @@ use App\Models\PropertyType;
 use App\Services\PropertyService;
 use App\Traits\ErrorResponseTrait;
 use Illuminate\Http\Request;
+use MeiliSearch\Endpoints\Indexes;
 
 class PropertyController extends Controller
 {
@@ -31,6 +32,15 @@ class PropertyController extends Controller
 
         return response()->json(["properties" => $paginationData]);
     } //end method index
+
+    public function search(PropertyService $propertyService)
+    {
+        try{
+            return response()->json(["properties" => $propertyService->searchResultsPaginationFromQuery()]);
+        }catch (PropertyServiceException $e) {
+            return $this->errorResponse($e);
+        }
+    } //end method search
 
     /**
      * Store a newly created resource in storage.

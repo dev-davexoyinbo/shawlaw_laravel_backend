@@ -35,6 +35,21 @@ class Property extends Model
         return $array;
     }
 
+    public function getScoutKey()
+    {
+        return $this->id;
+    }
+
+    /**
+     * Get the key name used to index the model.
+     *
+     * @return mixed
+     */
+    public function getScoutKeyName()
+    {
+        return 'id';
+    }
+
     /**
      * The "booted" method of the model.
      *

@@ -44,6 +44,6 @@ class PlatformSetup extends Command
         $this->call("migrate");
         $this->call("roles-permission:populate");
         $this->call("admin-user:setup");
-        $this->call("model-search:import");
+        // $this->call("model-search:import");
     }
 }

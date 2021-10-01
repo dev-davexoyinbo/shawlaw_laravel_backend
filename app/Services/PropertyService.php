@@ -160,6 +160,32 @@ class PropertyService
         return $this;
     } //end method updateOrCreateProperty
 
+    public function searchResultsPaginationFromQuery(){
+        $request = request();
+
+        $title = $request->title ?? '';
+        $minPrice = $request->min_price;
+        $maxPrice = $request->max_price;
+
+        try{
+            $propertyQuery = $request->by == "me" ? auth()->user()->properties() : Property::query();
+        }catch(\Throwable $th){
+            throw new PropertyServiceException("User must be authenticated", 401);
+        }
+
+        $propertyQuery = $propertyQuery->whereRaw("MATCH (title, status, type, address, city, country, state, area, price) AGAINST ('$title' IN NATURAL LANGUAGE MODE WITH QUERY EXPANSION)");
+
+
+        if ($minPrice) {
+            $propertyQuery->where("price", ">=", $minPrice);
+        }
+
+        if ($maxPrice) {
+            $propertyQuery->where("price", "<=", $maxPrice);
+        }
+
+        return $propertyQuery->simplePaginate();
+    }//end method searchResultsPaginationFromQuery
 
     public function save(): PropertyService
     {
