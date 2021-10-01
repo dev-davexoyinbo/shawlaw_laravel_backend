@@ -2,16 +2,17 @@
 
 namespace App\Console\Commands;
 
+use App\Models\Property;
 use Illuminate\Console\Command;
 
-class PlatformSetup extends Command
+class ModelSearchCommand extends Command
 {
     /**
      * The name and signature of the console command.
      *
      * @var string
      */
-    protected $signature = 'platform:setup';
+    protected $signature = 'model-search:import';
 
     /**
      * The console command description.
@@ -37,13 +38,12 @@ class PlatformSetup extends Command
      */
     public function handle()
     {
-        $this->call("key:generate");
-        $this->call("storage:link");
-        $this->call("jwt:secret");
-        // $this->call("migrate:refresh");
-        $this->call("migrate");
-        $this->call("roles-permission:populate");
-        $this->call("admin-user:setup");
-        $this->call("model-search:import");
+        $propertyClass = Property::class;
+        // $this->call("scout:import", [
+        //     "model" => $propertyClass
+        // ]);
+        $this->call("tntsearch:import", [
+            "model" => $propertyClass
+        ]);
     }
 }
