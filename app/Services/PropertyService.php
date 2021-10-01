@@ -160,7 +160,8 @@ class PropertyService
         return $this;
     } //end method updateOrCreateProperty
 
-    public function searchResultsPaginationFromQuery(){
+    public function searchResultsPaginationFromQuery()
+    {
         $request = request();
 
         $title = $request->title ?? '';
@@ -168,14 +169,19 @@ class PropertyService
         $maxPrice = $request->max_price;
         $bedroomCount = $request->bedroom_count;
         $bathroomCount = $request->bedroom_count;
+        $type = $request->type;
+        $status = $request->status;
+        $orderBy = $request->order_by;
 
-        try{
+        try {
             $propertyQuery = $request->by == "me" ? auth()->user()->properties() : Property::query();
-        }catch(\Throwable $th){
+        } catch (\Throwable $th) {
             throw new PropertyServiceException("User must be authenticated", 401);
         }
-
-        $propertyQuery = $propertyQuery->whereRaw("MATCH (title, status, type, address, city, country, state, area, price) AGAINST ('$title' IN NATURAL LANGUAGE MODE WITH QUERY EXPANSION)");
+        
+        if ($title) {
+            $propertyQuery = $propertyQuery->whereRaw("MATCH (title, status, type, address, city, country, state, area, price) AGAINST ('$title' IN NATURAL LANGUAGE MODE WITH QUERY EXPANSION)");
+        }
 
 
         if ($minPrice) {
@@ -194,8 +200,22 @@ class PropertyService
             $propertyQuery->where("bathroom_count", $bathroomCount);
         }
 
+        if ($type) {
+            $propertyQuery->where("type", $type);
+        }
+
+        if ($status) {
+            $propertyQuery->where("status", $status);
+        }
+
+        if ($orderBy && (strtolower($orderBy) == 'asc' || strtolower($orderBy) == 'desc')) {
+            $propertyQuery->orderBy('price', strtolower($orderBy));
+        } else {
+            $propertyQuery->latest();
+        }
+
         return $propertyQuery->simplePaginate();
-    }//end method searchResultsPaginationFromQuery
+    } //end method searchResultsPaginationFromQuery
 
     public function save(): PropertyService
     {
