@@ -214,7 +214,11 @@ class PropertyService
             $propertyQuery->latest();
         }
 
-        return $propertyQuery->simplePaginate();
+        $result =  $propertyQuery->paginate(3);
+
+        $result->last_page = $result->lastPage();
+
+        return $result;
     } //end method searchResultsPaginationFromQuery
 
     public function save(): PropertyService
