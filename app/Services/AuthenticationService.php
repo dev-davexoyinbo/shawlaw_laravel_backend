@@ -62,10 +62,14 @@ class AuthenticationService
     public function changePassword(): AuthenticationService {
         $user = auth()->user();
 
+        $request =request();
+
+        $this->login(["email" => $user->email, "password" => $request->password]);
+
         $this->userService
             ->user($user)
             ->updateOrCreateUser([
-                "password" => request()->new_password
+                "password" => $request->new_password
             ])->save();
 
         return $this;
