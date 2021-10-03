@@ -59,6 +59,18 @@ class AuthenticationService
         return $this;
     } //end method registerUser
 
+    public function changePassword(): AuthenticationService {
+        $user = auth()->user();
+
+        $this->userService
+            ->user($user)
+            ->updateOrCreateUser([
+                "password" => request()->new_password
+            ])->save();
+
+        return $this;
+    }//end method change password
+
     public function login($data): string
     {
         $email = $data["email"];

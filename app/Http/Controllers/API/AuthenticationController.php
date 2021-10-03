@@ -82,6 +82,25 @@ class AuthenticationController extends Controller
         return response()->json(["message" => "Logout sucessful!"]);
     } //end method logout
 
+    
+
+    public function changePassword(Request $request, AuthenticationService $authenticationService)
+    {
+        $request->validate([
+            "password" => "required",
+            "new_password" => "required|confirmed", // new_password_confirmation
+        ]);
+
+        try {
+            $authenticationService->changePassword();
+        } catch (AuthenticationServiceException $e) {
+            return $this->errorResponse($e);
+        }
+
+        return response()->json(["message" => "Password changed sucessful!"]);
+    } //end method changePassword
+
+
 
     public function me(AuthenticationService $authenticationService)
     {

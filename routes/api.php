@@ -30,6 +30,7 @@ Route::post("/auth/register", [AuthenticationController::class, "register"])
 Route::post("/auth/login", [AuthenticationController::class, "login"])->name("auth.login");
 Route::post("/auth/logout", [AuthenticationController::class, "logout"])->name("auth.logout");
 Route::get("/auth/me", [AuthenticationController::class, "me"])->name("auth.me");
+Route::post("/auth/change-password", [AuthenticationController::class, "changePassword"])->name("auth.change.password");
 
 Route::prefix("users")->middleware("auth:api")->group(function () {
     Route::post("/", [AuthenticationController::class, "register"])->middleware("role:ADMIN");
