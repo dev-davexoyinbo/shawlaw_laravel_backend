@@ -41,6 +41,7 @@ class PlatformSetup extends Command
         $this->call("migrate");
         $this->call("storage:link");
         $this->call("jwt:secret");
+        
         // $this->call("migrate:refresh");
         $this->call("roles-permission:populate");
         $this->call("admin-user:setup");
